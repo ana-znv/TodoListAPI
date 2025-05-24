@@ -40,5 +40,22 @@ namespace TodoListAPI.Controllers
 
             return task;
         }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateTask(Guid id, UpdateTaskDto updateTask)
+        {
+            var task = _context.Todos.Find(id);
+            if (task is null) return NotFound();
+
+            task.Title = updateTask.Title;
+            task.UpdatedAt = DateOnly.FromDateTime(DateTime.Now);
+            task.IsDone = updateTask.IsDone;
+            task.Description = updateTask.Description;
+
+            await _context.SaveChangesAsync();
+            return Ok(task);
+
+        }
     }
 }

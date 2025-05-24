@@ -55,7 +55,17 @@ namespace TodoListAPI.Controllers
 
             await _context.SaveChangesAsync();
             return Ok(task);
+        }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTask(Guid id)
+        {
+            var task = _context.Todos.Find(id);
+            if (task is null) return NotFound();
+            _context.Todos.Remove(task);
+            await _context.SaveChangesAsync();
+
+            return Ok(task);
         }
     }
 }
